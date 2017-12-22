@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conan.packager import ConanMultiPackager
+from conan.packager import ConanMultiPackager, split_colon_env
 import os
 import re
 import platform
@@ -53,15 +53,9 @@ def get_os():
     return platform.system().replace("Darwin", "Macos")
 
 def get_build_types():
-    build_types_a = os.getenv("CONFIGURATION", ['Release', 'Debug'])
-    if type(build_types_a) is not list:
-        build_types = [ build_types_a ]
-    else:
-        build_types = build_types_a
-        
-    build_types_env = os.getenv("CONAN_BUILD_TYPES", "")
-    if build_types_env and type(build_types_env) is not list:
-        build_types = [ build_types_env ]
+    # Only Appveyor has CONFIGURATION, Travis uses both types anyway.
+    build_types_a = split_colon_env("CONFIGURATION") or ['Release', 'Debug']
+    build_types = split_colon_env("CONAN_BUILD_TYPES") or build_types_a
 
     return build_types
     
@@ -72,9 +66,9 @@ def get_remotes():
     
     # If the user supplied a remote manually we give him priority
     # e.g. maybe he is trying to override the his repo or the bincrafter's repo.
-    remote_env = os.getenv("CONAN_REMOTES", "")
+    remote_env = split_colon_env("CONAN_REMOTES")
     if remote_env:
-        remotes.insert(0,remote_env)
+        remotes = remote_env + remotes
 
     return remotes
     
