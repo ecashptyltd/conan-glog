@@ -53,7 +53,7 @@ def get_os():
     return platform.system().replace("Darwin", "Macos")
 
 def get_build_type():
-    print("CONFIGURATION: " + os.getenv("CONFIGURATION"))
+    print("CONFIGURATION: " + str(os.getenv("CONFIGURATION", ["Release", "Debug"])))
     return os.getenv("CONFIGURATION", ["Release", "Debug"])
         
 if __name__ == "__main__":
