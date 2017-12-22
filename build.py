@@ -56,7 +56,6 @@ def get_build_types():
     # Only Appveyor has CONFIGURATION, Travis uses both types anyway.
     build_types_a = split_colon_env("CONFIGURATION") or ['Release', 'Debug']
     build_types = split_colon_env("CONAN_BUILD_TYPES") or build_types_a
-
     return build_types
     
 def get_remotes():
@@ -65,11 +64,10 @@ def get_remotes():
     remotes = [ user_remote, bincrafters_remote ]
     
     # If the user supplied a remote manually we give him priority
-    # e.g. maybe he is trying to override the his repo or the bincrafter's repo.
+    # e.g. maybe he is trying to override user_remote or the bincrafters_remote repo.
     remote_env = split_colon_env("CONAN_REMOTES")
     if remote_env:
         remotes = remote_env + remotes
-
     return remotes
     
 if __name__ == "__main__":
@@ -84,7 +82,7 @@ if __name__ == "__main__":
         reference=reference,
         build_types=get_build_types(),
         upload=upload,
-        remotes=get_remotes(),  # while redundant, this moves bincrafters remote to position 0
+        remotes=get_remotes(),
         upload_only_when_stable=True,
         stable_branch_pattern="stable/*")
 
