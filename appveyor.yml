@@ -3,9 +3,6 @@ build: false
 configuration:
   - Debug
   - Release
-
-before_build:
-  - set CONAN_BUILD_TYPES=%CONFIGURATION%
   
 environment:
     PYTHON: "C:\\Python27"
