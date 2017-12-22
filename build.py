@@ -54,10 +54,13 @@ def get_os():
 
 def get_build_types():
     build_types_a = os.getenv("CONFIGURATION", ['Release', 'Debug'])
-    build_types = [ build_types_a ]
-
+    if type(build_types_a) is not list:
+        build_types = [ build_types_a ]
+    else
+        build_types = build_types_a
+        
     build_types_env = os.getenv("CONAN_BUILD_TYPES", "")
-    if build_types_env:
+    if build_types_env and type(build_types_env) is not list:
         build_types = [ build_types_env ]
 
     return build_types
