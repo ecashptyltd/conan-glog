@@ -52,10 +52,23 @@ def get_env_vars():
 def get_os():
     return platform.system().replace("Darwin", "Macos")
 
-def get_remotes():
-    bincrafters_remote = 'https://api.bintray.com/conan/bincrafters/public-conan'
-    remotes = [ bincrafters_remote ]
+def get_build_types():
+    build_types_a = os.getenv("CONFIGURATION", ['Release', 'Debug'])
+    build_types = [ build_types_a ]
 
+    build_types_env = os.getenv("CONAN_BUILD_TYPES", "")
+    if build_types_env:
+        build_types = [ build_types_env ]
+
+    return build_types
+    
+def get_remotes():
+    user_remote = "https://api.bintray.com/conan/{0}/public-conan".format(username)
+    bincrafters_remote = 'https://api.bintray.com/conan/bincrafters/public-conan'
+    remotes = [ user_remote, bincrafters_remote ]
+    
+    # If the user supplied a remote manually we give him priority
+    # e.g. maybe he is trying to override the his repo or the bincrafter's repo.
     remote_env = os.getenv("CONAN_REMOTES", "")
     if remote_env:
         remotes.insert(0,remote_env)
@@ -72,6 +85,7 @@ if __name__ == "__main__":
         username=username,
         channel=channel,
         reference=reference,
+        build_types=get_build_types(),
         upload=upload,
         remotes=get_remotes(),  # while redundant, this moves bincrafters remote to position 0
         upload_only_when_stable=True,
