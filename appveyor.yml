@@ -19,7 +19,10 @@ environment:
 
 matrix:
     fast_finish: true
-    
+
+before_build:
+  - set CONAN_BUILD_TYPES=%CONFIGURATION%
+  
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
   - pip.exe install conan --upgrade

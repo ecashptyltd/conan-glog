@@ -52,10 +52,7 @@ def get_env_vars():
 def get_os():
     return platform.system().replace("Darwin", "Macos")
 
-def get_build_type():
-    print("CONFIGURATION: " + str(os.getenv("CONFIGURATION", ["Release", "Debug"])))
-    return os.getenv("CONFIGURATION", ["Release", "Debug"])
-        
+    
 if __name__ == "__main__":
     name = get_name_from_recipe()
     username, channel, version = get_env_vars()
@@ -66,7 +63,6 @@ if __name__ == "__main__":
         username=username,
         channel=channel,
         reference=reference,
-        build_types=get_build_type(),
         upload=upload,
         remotes=upload,  # while redundant, this moves bincrafters remote to position 0
         upload_only_when_stable=True,
