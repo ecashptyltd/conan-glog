@@ -52,6 +52,15 @@ def get_env_vars():
 def get_os():
     return platform.system().replace("Darwin", "Macos")
 
+def get_remotes():
+    bincrafters_remote = 'https://api.bintray.com/conan/bincrafters/public-conan'
+    remotes = [ bincrafters_remote ]
+
+    remote_env = os.getenv("CONAN_REMOTES", "")
+    if remote_env:
+        remotes.insert(0,remote_env)
+
+    return remotes
     
 if __name__ == "__main__":
     name = get_name_from_recipe()
@@ -64,7 +73,7 @@ if __name__ == "__main__":
         channel=channel,
         reference=reference,
         upload=upload,
-        remotes=upload,  # while redundant, this moves bincrafters remote to position 0
+        remotes=get_remotes(),  # while redundant, this moves bincrafters remote to position 0
         upload_only_when_stable=True,
         stable_branch_pattern="stable/*")
 
