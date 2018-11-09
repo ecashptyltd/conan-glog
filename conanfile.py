@@ -7,9 +7,9 @@ import os
 
 class GlogConan(ConanFile):
     name = "glog"
-    version = "0.3.5"
+    version = "20181109"
     url = "https://github.com/bincrafters/conan-glog"
-    homepage = "https://github.com/gflags/gflags"
+    homepage = "https://github.com/google/glog/"
     description = "Google logging library"
     license = "BSD 3-Clause"
     author = "Bincrafters <bincrafters@gmail.com>"
@@ -30,9 +30,9 @@ class GlogConan(ConanFile):
             self.requires("gflags/2.2.1@bincrafters/stable")
         
     def source(self):
-        source_url =  "https://github.com/google/{0}".format(self.name)
-        tools.get("{0}/archive/v{1}.tar.gz".format(source_url, self.version))
-        extracted_dir = self.name + "-" + self.version
+        commit = "5c292672df04ab82a97be5116d47dc0cc544b39f"
+        tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, commit))
+        extracted_dir = self.name + "-" + commit
         os.rename(extracted_dir, self._source_subfolder)
 
     def _configure_cmake(self):
